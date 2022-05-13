@@ -1,7 +1,7 @@
 
 # One-Dimentional-PegSolitaire
 
-One Dimentional PegSolitaire using dynamic programming (peg number must be even)
+One Dimentional PegSolitaire using recursion with dynamic programming 
 
 
 
