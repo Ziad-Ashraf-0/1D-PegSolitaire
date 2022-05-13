@@ -9,22 +9,22 @@ public class Peg {
 
     class Move implements Comparable<Move> {
         int from;
-        int hole;
+        // int hole;
         int to;
 
         Move(int from, int hole, int to) {
             this.from = from;
-            this.hole = hole;
+            // this.hole = hole;
             this.to = to;
         }
 
         public String toString() {
-            return ("(" + this.from + "," + this.hole + "," + this.to + ")");
+            return ("(" + (this.from + 1) + "," /* + (this.hole + 1) + "," */ + (this.to + 1) + ")");
         }
 
         @Override
         public int compareTo(Move o) {
-            // TODO Auto-generated method stub
+
             return Integer.valueOf(this.from).compareTo(Integer.valueOf(o.from));
         }
     }
@@ -48,10 +48,10 @@ public class Peg {
     }
 
     private void displayGrid() {
-        String temp = " ";
+        String temp = "";
         for (int i : grid) {
             // System.out.println(Integer.toString(i) + " ");
-            temp += Integer.toString(i);
+            temp += Integer.toString(i) + " ";
 
         }
         System.out.println(temp);
@@ -59,7 +59,12 @@ public class Peg {
 
     private void makeMove(Move move) {
         grid.set(move.from, 0);
-        grid.set(move.hole, 0);
+        if (move.from - move.to > 0) {
+            grid.set((move.from - 1), 0);
+        } else {
+            grid.set((move.from + 1), 0);
+        }
+
         grid.set(move.to, 1);
         moveList.add(move);
 
@@ -67,7 +72,11 @@ public class Peg {
 
     private void undoMove(Move move) {
         grid.set(move.from, 1);
-        grid.set(move.hole, 1);
+        if (move.from - move.to > 0) {
+            grid.set((move.from - 1), 1);
+        } else {
+            grid.set((move.from + 1), 1);
+        }
         grid.set(move.to, 0);
         moveList.remove(moveList.size() - 1);
 
@@ -118,6 +127,7 @@ public class Peg {
 
         if (getCount() == 1) {
             displayGrid();
+            System.out.println("Moves made (from,to)");
             printOut();
             return true;
         } else {
@@ -144,7 +154,17 @@ public class Peg {
     }
 
     public static void main(String[] args) {
-        Integer[] line = { 1, 1, 1, 1, 1, 1, 0, 1 };
+        /*
+         * the only way it will lead to a solution if the empty peg at the start is at 2
+         * or 5 and
+         * symmetrically (n-1) , (n-4)
+         */
+
+        /***
+         * Configure grid Here!!!!!!
+         * grid size must be even
+         ***/
+        Integer[] line = { 1, 1, 1, 0, 1, 1, 1, 1 };
         ArrayList<Integer> grid = new ArrayList<Integer>(Arrays.asList(line));
 
         Peg peg = new Peg(grid, grid.size());
